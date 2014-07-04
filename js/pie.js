@@ -1,6 +1,7 @@
-/* alert("hello world!"); */
-
 $(document).ready(function () {
+
+	console.log("TEST");
+
     var vis = d3.select(".svg_donut");
 
     var arc = d3.svg.arc()
