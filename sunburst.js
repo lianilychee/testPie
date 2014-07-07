@@ -1,13 +1,12 @@
 $(document).ready(function () {
 		
 	console.log("SUNBURST");
-	console.log("test commit from work");
 
 	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
 
 	var color = d3.scale.ordinal()
-		.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+		.range(["#5DA5DA", "#FAA43A"]);
 
 	var arc = d3.svg.arc()
 		.innerRadius(0)
@@ -25,8 +24,7 @@ $(document).ready(function () {
 
 	/* DATA NOT IN CSV FORM */
 	var dataset = [{"age": "< 5", "population": 2704659},
-					{"age": "5-13", "population": 4499890},
-					{"age": "14-17", "population": 215998}];
+					{"age": "5-13", "population": 4499890}];
 
 	console.log(dataset);
 
