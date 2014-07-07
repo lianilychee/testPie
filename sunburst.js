@@ -1,6 +1,7 @@
 $(document).ready(function () {
 		
 	console.log("SUNBURST");
+	console.log("test commit from work");
 
 	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
