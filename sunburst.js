@@ -49,15 +49,27 @@ var path = gs.selectAll("path")
 
 	
 // ALL SEGMENTS IN ONE RING
+
+
 	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
 
-	var color = d3.scale.ordinal()
-		.range(["#5DA5DA", "#FAA43A", "4D4D4D"]);
+	/* ----- INNER ARC ----- */
+
+	var innerColor = d3.scale.ordinal()
+		.range(["#5DA5DA", "#FFFFFF"]);
 
 	var innerArc = d3.svg.arc()
 		.innerRadius(50)
 		.outerRadius(100);
+
+	/* ----- OUTER ARC ----- */
+	var outerColor = d3.scale.ordinal()
+		.range(["#FFFFFF", "#FAA43A"])
+
+	var outerArc = d3.svg.arc()
+		.innerRadius(100)
+		.outerRadius(150);
 
 	var pie = d3.layout.pie()
 		.sort(null)
@@ -70,8 +82,8 @@ var path = gs.selectAll("path")
 		.attr("transform", "translate(" +width/2+ "," +height/2+ ")");
 
 	// DATA NOT IN CSV FORM
-	var dataset = [{"age": "< 5", "population": 5},
-					{"age": "5-13", "population": 10}];
+	var dataset = [{"age": "blue", "population": 1},
+					{"age": "orange", "population": 3}];
 	console.log(dataset);
 	
 //	dataset.forEach(function(d) {
@@ -85,10 +97,11 @@ var path = gs.selectAll("path")
 		.enter().append("g")
 			.attr("class", "arc");
 
+	// ----- INNER ARC, YO ----- //
 	// Fill path (each segment) with appropriate color
 	g.append("path")
 		.attr("d", innerArc)
-		.style("fill", function(d) {return color(d.data.age);});
+		.style("fill", function(d) {return innerColor(d.data.age);});
 
 	// Add label within segment
 	g.append("text")
@@ -96,5 +109,19 @@ var path = gs.selectAll("path")
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
 		.text(function(d) {return d.data.age /* + d.data.population */ ;});
+
+
+	// ----- OUTER ARC, YO ----- //
+	g.append("path")
+		.attr("d", outerArc)
+		.style("fill", function(d) {return outerColor(d.data.age);});
+
+	// Add label within segment
+	g.append("text")
+		.attr("transform", function(d) {return "translate(" +outerArc.centroid(d)+ ")";})
+		.attr("dy", ".35em")
+		.style("text-anchor", "middle")
+		.text(function(d) {return d.data.age /* + d.data.population */ ;});
+
 
 });
