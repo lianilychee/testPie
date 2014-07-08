@@ -1,60 +1,32 @@
 $(document).ready(function () {
 
-/*
-// RINGS KINDA WORK
-var rawData = [{"rt": 0, "fav": 1},
-				{"rt": 0, "fav": 1},
-				{"rt": 1, "fav": 1},
-				{"rt": 1, "fav": 0}];
-
-var rtCount = 0, favCount = 0;
-for (var i = 0; i < rawData.length; i++) {
-	rtCount += rawData[i].rt;
-	favCount += rawData[i].fav;
-};
-
-var total = rawData.length;
-var overlap = rtCount + favCount - total;
-var dataset = {
-		rtCount: [rtCount, total-rtCount],
-		favCount: [favCount, total-favCount] };
-
-var width = 600, height = 400, cwidth = 25;
-
-// var color = d3.scale.category20();
-var color = d3.scale.ordinal()
-	// blue, orange
-//	.range(["#5DA5DA", "#FFFFFF"]);
-	.range(["#5DA5DA", "#FAA43A"]);
-
-var pie = d3.layout.pie()
-	.sort(null);
-
-var arc = d3.svg.arc();
-
-var svg = d3.select("#sunburst").append("svg")
-	.attr("width", width)
-	.attr("height", height)
-	.append("g")
-	.attr("transform", "translate(" +width/2+ "," +height/2+ ")");
-
-var gs = svg.selectAll("g").data(d3.values(dataset)).enter().append("g");
-var path = gs.selectAll("path")
-	.data(function(d) { return pie(d); })
-  .enter().append("path")
-	.attr("fill", function(d, i) { return color(i); })
-	.attr("d", function(d, i, j) { return arc.innerRadius(50+cwidth*j).outerRadius(cwidth*(j+1))(d); });
-});
-*/
-
-	
 	// Select HTML defined SVG and set dimensions.
 	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
 
 	// Define data.
-	var dataset = [{"age": "blue", "population": 1},
-					{"age": "orange", "population": 3}];
+	var rawData = [{"id": "1", "rtCount": 1, "favCount": 0},
+					{"id": "2", "rtCount": 1, "favCount": 0},
+					{"id": "3", "rtCount": 1, "favCount": 1},
+					{"id": "4", "rtCount": 0, "favCount": 0}];
+
+	var tweetCount = rawData.length;
+
+	var rtCount = 0, favCount = 0;
+	for (var i = 0; i < rawData.length; i++) {
+		rtCount += rawData[i].rtCount;
+		favCount += rawData[i].favCount;
+	};
+
+	var external = 0;
+	for (var i = 0; i < rawData.length; i++) {
+		if (rawData[i].rtCount==0 && rawData[i].favCount==0) {
+			external = external+1;
+		};
+	};
+
+	var cleanData = [{"spreadType": "Twitter", "tweets": tweetCount - external},
+					{"spreadType": "External", "tweets": external}];
 
 	// Define color scales.
 	var innerColor = d3.scale.ordinal()
@@ -75,7 +47,7 @@ var path = gs.selectAll("path")
 	// Set sections to draw in the order that it appears in the data.
 	var pie = d3.layout.pie()
 		.sort(null)
-		.value(function(d) {return d.population;});
+		.value(function(d) {return d.tweets;});
 
 	var svg = d3.select("#sunburst").append("svg")
 		.attr("width", width)
@@ -85,36 +57,36 @@ var path = gs.selectAll("path")
 	
 //	dataset.forEach(function(d) {
 //		console.log("run d function");
-//		d.population = +d.population;
+//		d.tweets = +d.tweets;
 //	});
 
 	// Draw each arc, named g
 	var g = svg.selectAll(".arc")
-			.data(pie(dataset))
+			.data(pie(cleanData))
 		.enter().append("g")
 			.attr("class", "arc");
 
 	// Fill path (each segment) with appropriate color
 	g.append("path")
 		.attr("d", innerArc)
-		.style("fill", function(d) {return innerColor(d.data.age);});
+		.style("fill", function(d) {return innerColor(d.data.spreadType);});
 
 	g.append("path")
 		.attr("d", outerArc)
-		.style("fill", function(d) {return outerColor(d.data.age);});
+		.style("fill", function(d) {return outerColor(d.data.spreadType);});
 
 	// Add label within segment
 	g.append("text")
 		.attr("transform", function(d) {return "translate(" +innerArc.centroid(d)+ ")";})
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
-		.text(function(d) {return d.data.age /* + d.data.population */ ;});
+		.text(function(d) {return d.data.spreadType;});
 
 	g.append("text")
 		.attr("transform", function(d) {return "translate(" +outerArc.centroid(d)+ ")";})
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
-		.text(function(d) {return d.data.age /* + d.data.population */ ;});
+		.text(function(d) {return d.data.spreadType;});
 
 
 });
