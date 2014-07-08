@@ -10,23 +10,14 @@ $(document).ready(function () {
 					{"id": "3", "rtCount": 1, "favCount": 1},
 					{"id": "4", "rtCount": 0, "favCount": 0}];
 
-	var tweetCount = rawData.length;
-
 	var rtCount = 0, favCount = 0;
 	for (var i = 0; i < rawData.length; i++) {
 		rtCount += rawData[i].rtCount;
 		favCount += rawData[i].favCount;
 	};
 
-	var external = 0;
-	for (var i = 0; i < rawData.length; i++) {
-		if (rawData[i].rtCount==0 && rawData[i].favCount==0) {
-			external = external+1;
-		};
-	};
-
-	var cleanData = [{"spreadType": "Twitter", "tweets": tweetCount - external},
-					{"spreadType": "External", "tweets": external}];
+	var cleanData = [{"spreadType": "Retweeted", "tweets": rtCount},
+					{"spreadType": "Favorited", "tweets": favCount}];
 
 	// Define color scales.
 	var innerColor = d3.scale.ordinal()
