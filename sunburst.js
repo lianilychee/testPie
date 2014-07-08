@@ -48,29 +48,31 @@ var path = gs.selectAll("path")
 */
 
 	
-// ALL SEGMENTS IN ONE RING
-
-
+	// Select HTML defined SVG and set dimensions.
 	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
 
-	/* ----- INNER ARC ----- */
+	// Define data.
+	var dataset = [{"age": "blue", "population": 1},
+					{"age": "orange", "population": 3}];
 
+	// Define color scales.
 	var innerColor = d3.scale.ordinal()
 		.range(["#5DA5DA", "#FFFFFF"]);
 
+	var outerColor = d3.scale.ordinal()
+		.range(["#FFFFFF", "#FAA43A"]);
+
+	// Define arc inner and outer radii.
 	var innerArc = d3.svg.arc()
 		.innerRadius(50)
 		.outerRadius(100);
-
-	/* ----- OUTER ARC ----- */
-	var outerColor = d3.scale.ordinal()
-		.range(["#FFFFFF", "#FAA43A"])
 
 	var outerArc = d3.svg.arc()
 		.innerRadius(100)
 		.outerRadius(150);
 
+	// Set sections to draw in the order that it appears in the data.
 	var pie = d3.layout.pie()
 		.sort(null)
 		.value(function(d) {return d.population;});
@@ -80,11 +82,6 @@ var path = gs.selectAll("path")
 		.attr("height", height)
 		.append("g")
 		.attr("transform", "translate(" +width/2+ "," +height/2+ ")");
-
-	// DATA NOT IN CSV FORM
-	var dataset = [{"age": "blue", "population": 1},
-					{"age": "orange", "population": 3}];
-	console.log(dataset);
 	
 //	dataset.forEach(function(d) {
 //		console.log("run d function");
@@ -97,11 +94,14 @@ var path = gs.selectAll("path")
 		.enter().append("g")
 			.attr("class", "arc");
 
-	// ----- INNER ARC, YO ----- //
 	// Fill path (each segment) with appropriate color
 	g.append("path")
 		.attr("d", innerArc)
 		.style("fill", function(d) {return innerColor(d.data.age);});
+
+	g.append("path")
+		.attr("d", outerArc)
+		.style("fill", function(d) {return outerColor(d.data.age);});
 
 	// Add label within segment
 	g.append("text")
@@ -110,13 +110,6 @@ var path = gs.selectAll("path")
 		.style("text-anchor", "middle")
 		.text(function(d) {return d.data.age /* + d.data.population */ ;});
 
-
-	// ----- OUTER ARC, YO ----- //
-	g.append("path")
-		.attr("d", outerArc)
-		.style("fill", function(d) {return outerColor(d.data.age);});
-
-	// Add label within segment
 	g.append("text")
 		.attr("transform", function(d) {return "translate(" +outerArc.centroid(d)+ ")";})
 		.attr("dy", ".35em")
