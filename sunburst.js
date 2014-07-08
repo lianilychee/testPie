@@ -19,6 +19,18 @@ $(document).ready(function () {
 	var cleanData = [{"spreadType": "Retweeted", "tweets": rtCount},
 					{"spreadType": "Favorited", "tweets": favCount}];
 
+
+
+/** I AM HERE.
+	* I've already got a radian to linear scale conversion.
+	* Now, I have to get that conversion to translate into overlapping start/endAngles...
+	* ... without making my segments vanish. */
+
+
+
+	// Scale changed from radians to tweets.
+	var scale = d3.scale.linear().domain([0, rawData.length]).range([0, 2*Math.PI]);
+
 	// Define color scales.
 	var innerColor = d3.scale.ordinal()
 		.range(["#5DA5DA", "#FFFFFF"]);
@@ -29,7 +41,7 @@ $(document).ready(function () {
 	// Define arc inner and outer radii.
 	var innerArc = d3.svg.arc()
 		.innerRadius(50)
-		.outerRadius(100);
+		.outerRadius(100)
 
 	var outerArc = d3.svg.arc()
 		.innerRadius(100)
