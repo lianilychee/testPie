@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 	// Select HTML defined SVG and set dimensions.
-	var vis = d3.select("#bar");
+	var vis = d3.select("#sunburst");
 	var width = 600, height = 400;
 
 	// Define data.
@@ -52,7 +52,7 @@ $(document).ready(function () {
 		.sort(null)
 		.value(function(d) {return d.tweets;});
 
-	var svg = d3.select("#bar").append("svg")
+	var svg = d3.select("#sunburst").append("svg")
 		.attr("width", width)
 		.attr("height", height)
 		.append("g")
