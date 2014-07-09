@@ -18,7 +18,7 @@ $(document).ready(function () {
 	/** ----- RENDER GRAPH ----- **/
 
 	// ----- SVG setup -----
-	var width = 500, height = 300, barPadding = 1;
+	var width = 500, height = 125, barPadding = 1;
 
 	// ----- Setup axes -----
 	var labels = ["1-10", "11-20", "21-30", "31-40", "41-50"];
@@ -61,9 +61,9 @@ $(document).ready(function () {
 		.data(dataset)
 		.enter()
 		.append("text")
-		.text(function(d) { return d; })
+		.text(function(d) { return d; } )
 		.attr("x", function(d,i) { return i * (width / dataset.length); })
-		.attr("y", function(d) { return height - (d); });
+		.attr("y", function(d) { return height - d - 5; });
 
 	// ----- Draw axes -----
 	svg.append("g")
