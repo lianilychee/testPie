@@ -1,30 +1,42 @@
 $(document).ready(function () {
 
+	// Define data.
+	// Of 12 tweets, 10 were RT'd and all were fav'd. 
+	var total = 12;
+	var rawData = [{"type": "RT", "yes": 10},
+					{"type": "Fav", "yes": 12}];
+
 	// Select HTML defined SVG and set dimensions.
-	var vis = d3.select("#bar");
 	var width = 600, height = 400;
 
-	// Define data.
-	var rawData = [{"id": "1", "rtCount": 1, "favCount": 0},
-					{"id": "2", "rtCount": 1, "favCount": 0},
-					{"id": "3", "rtCount": 1, "favCount": 1},
-					{"id": "4", "rtCount": 0, "favCount": 0}];
+	var vis = d3.select("#sunburst")
+		.attr("width", width)
+		.attr("height", height);
 
-	var rtCount = 0, favCount = 0;
-	for (var i = 0; i < rawData.length; i++) {
-		rtCount += rawData[i].rtCount;
-		favCount += rawData[i].favCount;
-	};
+	var rtArc = d3.svg.arc()
+		.innerRadius(50)
+		.outerRadius(100)
+		.startAngle(0.5*Math.PI)
+		.endAngle(1.0*Math.PI);
 
-	var cleanData = [{"spreadType": "Retweeted", "tweets": rtCount},
-					{"spreadType": "Favorited", "tweets": favCount}];
+	var favArc = d3.svg.arc()
+		.innerRadius(100)
+		.outerRadius(150)
+		.startAngle(0)
+		.endAngle(1.5*Math.PI);
 
+	vis.append("path")
+		.attr("d", rtArc)
+		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")");
 
+	vis.append("path")
+		.attr("d", favArc)
+		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")");
 
-/** I AM HERE.
+/*	I AM HERE.
 	* I've already got a radian to linear scale conversion.
 	* Now, I have to get that conversion to translate into overlapping start/endAngles...
-	* ... without making my segments vanish. */
+	* ... without making my segments vanish.
 
 
 
@@ -89,7 +101,7 @@ $(document).ready(function () {
 		.attr("transform", function(d) {return "translate(" +outerArc.centroid(d)+ ")";})
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
-		.text(function(d) {return d.data.spreadType;});
+		.text(function(d) {return d.data.spreadType;}); */
 
 
 });
