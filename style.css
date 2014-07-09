@@ -7,11 +7,10 @@
 	color: white;
 }
 
-.chart div{
-	font: 10px sans-serif;
-	background-color: steelblue;
-	text-align: right;
-	padding: 3px;
-	margin: 1px;
-	color: white;
+.axis line{
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+	font-family: sans-serif;
+	font-size: 11px;
 }
