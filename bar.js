@@ -42,18 +42,13 @@ $(document).ready(function () {
 		.data(dataset)
 		.enter()
 		.append("rect")
-
 		// Change the bar spacing based on bar count.
 		.attr("x", function(d,i) { return i*(width/dataset.length);})
-
 		// Grow the bars from bottom up, rather from top down.
 		.attr("y", function(d) { return height - d; })
-
 		.attr("width", width / dataset.length - barPadding)
-
 		// Scale bar height by 10, otherwise the bars are too short.
 		.attr("height", function(d) { return d; })
-
 		// Color!
 		.attr("fill", "#5DA5DA");
 
