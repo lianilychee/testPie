@@ -1,12 +1,43 @@
 $(document).ready(function () {
 
-	// Define data.
-	// Of 12 tweets, 10 were RT'd and all were fav'd. 
-	var total = 12;
-	var rawData = [{"type": "RT", "yes": 10},
-					{"type": "Fav", "yes": 12}];
+	// Define raw data.  In meme-prop, this should just be piped in from prepData().
+	var rawData = [{ "id": "1000", "rt": 1, "fav": 0 },
+					{ "id": "2000", "rt": 0, "fav": 1 },
+					{ "id": "3000", "rt": 0, "fav": 0 },
+					{ "id": "4000", "rt": 1, "fav": 1 },
+					{ "id": "5000", "rt": 1, "fav": 0 },
+					{ "id": "6000", "rt": 1, "fav": 0 },
+					{ "id": "7000", "rt": 0, "fav": 1 },
+					{ "id": "8000", "rt": 0, "fav": 1 },
+					{ "id": "9000", "rt": 1, "fav": 1 },
+					{ "id": "10000", "rt": 1, "fav": 1 }];
+
+	// Pull out necessary information from rawData.
+	var countOverlap = 0, countNone = 0, countRt = 0, countFav = 0;
+	var memeLength = rawData.length;
+
+	for (var i = 0; i < memeLength; i++) {
+		if (rawData[i].rt==1 && rawData[i].fav==1) { countOverlap++; };
+		if (rawData[i].rt==0 && rawData[i].fav==0) { countNone++; };
+		if (rawData[i].rt==1) { countRt++; };
+		if (rawData[i].rt==0) { countFav++; };
+	};
+
+	var counts = {"memeLength": memeLength,
+					"countNone": countNone,
+					"countOverlap": countOverlap,
+					"countRt": countRt,
+					"countFav": countFav};
+	//console.log(counts);
+
+	var renderData = { "startRtArc": countNone, 
+						"endRtArc": countNone+countRt,
+						"startFavArc": countNone+countRt-countOverlap, 
+						"endFavArc": countNone+countRt-countOverlap+countFav };
+	//console.log(renderData);
 
 	// Convert radians to linear based on tweets.
+	var scale = d3.scale.linear().domain([0, memeLength]).range([0, 2*Math.PI]);
 
 	// Select HTML defined SVG and set dimensions.
 	var width = 600, height = 400;
@@ -18,14 +49,14 @@ $(document).ready(function () {
 	var rtArc = d3.svg.arc()
 		.innerRadius(50)
 		.outerRadius(100)
-		.startAngle(0.5*Math.PI)
-		.endAngle(1.0*Math.PI);
+		.startAngle(scale(renderData.startRtArc))
+		.endAngle(scale(renderData.endRtArc));
 
 	var favArc = d3.svg.arc()
 		.innerRadius(75)
 		.outerRadius(125)
-		.startAngle(0)
-		.endAngle(1.5*Math.PI);
+		.startAngle(scale(renderData.startFavArc))
+		.endAngle(scale(renderData.endFavArc));
 
 	vis.append("path")
 		.attr("d", rtArc)
@@ -37,7 +68,7 @@ $(document).ready(function () {
 	vis.append("path")
 		.attr("d", favArc)
 		.attr("fill", "#FAA43A")
-		.attr("opacity", "0.75")
+		.attr("opacity", "0.55")
 		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")");
 
 });
