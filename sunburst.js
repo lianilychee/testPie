@@ -71,13 +71,16 @@ $(document).ready(function () {
 		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")")
 		.on("click", function(d) { console.log("rtArc"); });
 
-
 	svg.append("path")
 		.attr("d", favArc)
 		.attr("fill", "#FAA43A")
 		.attr("opacity", "0.55")
 		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")")
-		.on("click", function(d) { console.log("favArc"); });	
+		// .on("mouseover", function(d) { style="cursor:wait"} )
+		.on("click", function(d) { console.log("favArc"); });
+
+/* YOU ARE HERE.  Have to filter tweet-table accordingly,
+as well as make onmouseover work.  Perhaps look at how Sarah does it?  */	
 
 	// Add text.
 	var rtLabel = svg.append("svg:text")
