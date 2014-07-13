@@ -50,7 +50,7 @@ $(document).ready(function () {
 		.attr("height", height);
 
 
-	// Set up slices.
+	// Draw arcs.
 	var rtArc = d3.svg.arc()
 		.innerRadius(50)
 		.outerRadius(100)
@@ -78,5 +78,20 @@ $(document).ready(function () {
 		.attr("opacity", "0.55")
 		.attr("transform", "translate(" +(width/2)+ "," +(height/2)+ ")")
 		.on("click", function(d) { console.log("favArc"); });	
+
+	// Add text.
+	var rtLabel = svg.append("svg:text")
+		.attr("dx", width/2)
+		.attr("dy", height/2)
+		.attr("text-anchor", "middle")
+		.attr("fill", "#5DA5DA")
+		.text("RT'd: " + countRt);
+
+	var favLabel = svg.append("svg:text")
+		.attr("dx", width/2)
+		.attr("dy", height/2 + 16) // line break hard-coded
+		.attr("text-anchor", "middle")
+		.attr("fill", "#FAA43A")
+		.text("Fav'd: " + countFav);
 
 });
