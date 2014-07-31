@@ -12,11 +12,17 @@
 <script>
 
 // Put tweets in the correct format.
-hello = [ 1,
-		  2,2,
-		  3,3,3,
-		  4,4,4,4,
-		  5,5,5,5,5]
+hello = [ {"id": 7703, "rtCount": 1},
+			{"id": 6503, "rtCount": 1},
+			{"id": 9436, "rtCount": 6} ];
+
+hi = { [1,1,6], 
+		[7703,6503,9436] };
+
+maxRtCount = 6;
+maxFreq = 2;
+
+old = [ 1,1,6 ];
 
 
 // General SVG settings
@@ -32,7 +38,7 @@ var svg = d3.select("body").append("svg")
 
 // Set up and draw x-axis.
 var x = d3.scale.linear()
-	.domain( [0, d3.max(hello)+1 ])
+	.domain( [0, maxRtCount+1 ])
 	.range([0, width]);
 
 var xAxis = d3.svg.axis()
@@ -47,7 +53,7 @@ svg.append("g")
 // Generate a histogram using twenty uniformly-spaced bins.
 // Histogram generation MUST go before y-axis, for some reason.
 var data = d3.layout.histogram()
-	.bins(x.ticks( d3.max(hello) ))
+	.bins(x.ticks( maxRtCount ))
 	(hello);
 
 // Set up and draw y-axis
